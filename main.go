@@ -55,6 +55,7 @@ func main() {
 	r := gin.Default()
 
 	r.POST("/api/translate", handleTranslation)
+	r.GET("/api/translate", handleTranslation)
 
 	r.Run()
 }
