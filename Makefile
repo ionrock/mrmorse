@@ -1,0 +1,2 @@
+mrmorse:
+	go build .
