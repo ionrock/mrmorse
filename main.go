@@ -12,7 +12,7 @@ import (
 // IsMorseCode aims to understand whether a string is morse code or
 // not.
 func IsMorseCode(msg string) bool {
-	validMorseChars := ".- "
+	validMorseChars := ".- /|"
 	for _, c := range msg {
 		if !strings.ContainsRune(validMorseChars, c) {
 			return false

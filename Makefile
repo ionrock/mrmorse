@@ -6,3 +6,7 @@ mrmorse: $(SOURCE)
 
 web: mrmorse
 	./mrmorse
+
+
+test:
+	go test .
