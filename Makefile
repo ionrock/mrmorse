@@ -1,4 +1,4 @@
-SOURCE=$(find . -name '.go')
+SOURCE=$(find . -name '*.go')
 
 mrmorse: $(SOURCE)
 	go mod tidy

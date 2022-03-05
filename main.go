@@ -22,12 +22,8 @@ func IsMorseCode(msg string) bool {
 	return true
 }
 
-type TranslationRequest struct {
-	Text string `form:"text"`
-}
-
-func handleTranslation(c *gin.Context) {
-	var req TranslationRequest
+// Translate encodes or decodes the text to and from morse code.
+func Translate(input string) (string, error) {
 	var translation []byte
 
 	translator := morse.NewHacker()
@@ -35,14 +31,29 @@ func handleTranslation(c *gin.Context) {
 	// By default we'll translate text to morse code.
 	translate := translator.Encode
 
-	c.Bind(&req)
-
-	if IsMorseCode(req.Text) {
+	if IsMorseCode(input) {
 		translate = translator.Decode
 	}
 
 	// We assume it is text we should translate to morse code
-	translation, err := translate(strings.NewReader(req.Text))
+	translation, err := translate(strings.NewReader(input))
+	if err != nil {
+		return input, err
+	}
+
+	return string(translation), nil
+}
+
+type TranslationRequest struct {
+	Text string `form:"text"`
+}
+
+func handleTranslation(c *gin.Context) {
+	var req TranslationRequest
+
+	c.Bind(&req)
+
+	translation, err := Translate(req.Text)
 	if err != nil {
 		c.String(http.StatusBadRequest, fmt.Sprintf("Error: %s", err))
 		return

@@ -4,20 +4,36 @@ import (
 	"testing"
 )
 
-func TestIsMorseCode(t *testing.T) {
-	type morseTest struct {
-		input string
-		want  bool
-	}
-	morseTests := []morseTest{
-		{"Hello World!", false},
-		{"-.-- --- ..- / ... .... --- ..- .-.. -.. / .-.. . .- .-. -. / -.-. .--", true},
-	}
+type morseTest struct {
+	input   string
+	output  string
+	isMorse bool
+}
 
+var morseTests = []morseTest{
+	{"HELLO WORLD!", ".... . .-.. .-.. --- / .-- --- .-. .-.. -.. -.-.--", false},
+	{".... . .-.. .-.. --- / .-- --- .-. .-.. -.. -.-.--", "HELLO WORLD!", true},
+}
+
+func TestIsMorseCode(t *testing.T) {
 	for _, mt := range morseTests {
 		result := IsMorseCode(mt.input)
-		if mt.want != result {
-			t.Errorf("for input: %v, expected: %v, got: %v", mt.input, mt.want, result)
+		if mt.isMorse != result {
+			t.Errorf("for input: %v, expected: %v, got: %v", mt.input, mt.isMorse, result)
+		}
+	}
+}
+
+func TestTranslate(t *testing.T) {
+	for _, mt := range morseTests {
+		result, err := Translate(mt.input)
+		if err != nil {
+			t.Errorf("Translate error: %v", err)
+			return
+		}
+
+		if mt.output != result {
+			t.Errorf("for input: %v, expected: %v, got: %v", mt.input, mt.output, result)
 		}
 	}
 }
